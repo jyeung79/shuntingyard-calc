@@ -1,7 +1,6 @@
  // Instantiate all global variables
 let displayString = "";
 let currentOperand = 0;
-let justCleared = true; // Flag for determining if operations are new or cleared
 let pressedOperator = false; // Flag to determine if new values are entered instead of operators
 let operands = [];
 let operators = [];
@@ -35,7 +34,7 @@ function multiply(num1, num2) {
 
 function divide(num1, num2) {
     if (typeof(num1) == 'string' || typeof(num2) == 'string') {
-        return console.log("Invalid entries. Try again using numerical values.");
+        return console.log('Detected string entries. Try again using numerical values');
     } else {
         return num1/num2;
     }
@@ -62,7 +61,7 @@ function operate(operation, num1, num2) {
     return result;
 }
 
-function display() {
+function main() {
     const btns = document.querySelectorAll('button');
 
     btns.forEach((button) => {
@@ -111,24 +110,19 @@ function pressBtn (btnID) {
             clickNumber(9);
             break;
         case 'divide':
-            clickOperator('divide');
-            displayString = displayString + ' / ';
+            clickOperator('divide', '/');
             break;
         case 'multiply':
-            clickOperator('multiply');
-            displayString = displayString + ' x ';
+            clickOperator('multiply', 'x');
             break;
         case 'subtract':
-            clickOperator('subtract');
-            displayString = displayString + ' - ';
+            clickOperator('subtract', '-');
             break;
         case 'plus':
-            clickOperator('plus');
-            displayString = displayString + ' + ';
+            clickOperator('plus', '+');
             break;
         case 'clear':
-            displayString = '0';
-            justCleared = true;
+            clear();
             break;
         case 'plusminus':
             displayString = '-' + displayString;
@@ -149,42 +143,52 @@ function pressBtn (btnID) {
     return displayString;
 }
 
-function clickOperator(typeOfOperation) {
+function clickOperator(typeOfOperation, symbol) {
     // Operand is stored into currentOperand
     // Need to store it into the operands array
     let j = operands.length;
     let k = operators.length;
+    let length = displayString.length;
 
-    if (pressedOperator == false) {
-        // Check to see if an operator has been pressed twice. If it has then the new operator should replace the other operator
+    if (!pressedOperator) {
+        // Checks to see if a number has been entered
         operands[j] = currentOperand;
         operators[k] = typeOfOperation;
         currentOperand = 0; // Set current Operand to zero
         pressedOperator = true;
+        displayString = displayString + ' ' + symbol + ' ';
     } else {
         operators[k-1] = typeOfOperation;
         pressedOperator = true;
+        let replaceOpStr = displayString.slice(0, length-2);
+        displayString = replaceOpStr + symbol + ' ';
     }
 }
 
 function clickNumber(number) {
     // Check if the value is not a 0
-    if (justCleared && number != 0) {
+    if (currentOperand == 0 && number != 0) {
         currentOperand = number;
-        justCleared = false;
-        displayString = currentOperand.toString();
-    } else if (justCleared && number == 0) { //Make sure display does not change
+        displayString = displayString + currentOperand.toString();
+        pressedOperator = false;
+    } else if (currentOperand == 0 && number == 0) { //Make sure display does not change
         currentOperand = 0;
-        displayString = '0';
+        pressedOperator = false;
+        if (operands.length != 0){
+            displayString = displayString + '0';
+        }
     } else {
         currentOperand = currentOperand*10 + number;
         displayString = displayString + number.toString();
     }
-
     pressedOperator = false; // Keep in mind of this flag
     console.log(currentOperand);
 }
 
 function clear() {
-    display = "";
+    currentOperand = 0;
+    displayString = currentOperand.toString();
+    operands = [];
+    operators = [];
+    pressedOperator = false;
 }
