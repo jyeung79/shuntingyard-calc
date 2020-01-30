@@ -61,6 +61,25 @@ function operate(operation, num1, num2) {
     return result;
 }
 
+function equal(operandList, operatorList) {
+    let result = [];
+
+    if (currentOperand == NaN) {
+        break;
+    } else {
+        let j = operandList.length;
+        operandList[j] = currentOperand;
+        
+        for (i=0; i < operatorList.length; i++) {
+            if ( operatorList[i] == 'multiply' || operatorList[i] == 'divide'){
+                result.push(operate(operatorList[i], operandList[i], operandList[i+1]));
+            } else {
+                result.push(operandList[i]);                                                                                                                                                                                                                   
+            }
+        }
+    }
+}
+
 function main() {
     const btns = document.querySelectorAll('button');
 
@@ -154,28 +173,28 @@ function clickOperator(typeOfOperation, symbol) {
         // Checks to see if a number has been entered
         operands[j] = currentOperand;
         operators[k] = typeOfOperation;
-        currentOperand = 0; // Set current Operand to zero
-        pressedOperator = true;
+        currentOperand = NaN; // Set current Operand to zero
         displayString = displayString + ' ' + symbol + ' ';
     } else {
         operators[k-1] = typeOfOperation;
-        pressedOperator = true;
         let replaceOpStr = displayString.slice(0, length-2);
         displayString = replaceOpStr + symbol + ' ';
     }
+    pressedOperator = true;
 }
 
 function clickNumber(number) {
     // Check if the value is not a 0
-    if (currentOperand == 0 && number != 0) {
+    if (currentOperand == NaN) {
         currentOperand = number;
         displayString = displayString + currentOperand.toString();
-        pressedOperator = false;
-    } else if (currentOperand == 0 && number == 0) { //Make sure display does not change
-        currentOperand = 0;
-        pressedOperator = false;
-        if (operands.length != 0){
-            displayString = displayString + '0';
+    } else if (currentOperand == 0) { //Make sure display does not change
+        if (number == 0) {
+            currentOperand = 0;
+        } else {
+            currentOperand = number;
+            let replaceStr = displayString.slice(0, length-1);
+            displayString = replaceStr + currentOperand.toString();
         }
     } else {
         currentOperand = currentOperand*10 + number;
