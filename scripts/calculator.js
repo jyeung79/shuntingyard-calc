@@ -2,8 +2,7 @@
 let displayString = "";
 let currentOperand = 0;
 let pressedOperator = false; // Flag to determine if new values are entered instead of operators
-let operands = [];
-let operators = [];
+let decimalPressed = false; // Flag to determine if operand has a decimal pressed
 
 const screen = document.querySelector('#calc-display');
 
@@ -61,22 +60,10 @@ function operate(operation, num1, num2) {
     return result;
 }
 
-function equal(operandList, operatorList) {
-    let result = [];
-
-    if (currentOperand == NaN) {
-        break;
-    } else {
-        let j = operandList.length;
-        operandList[j] = currentOperand;
-        
-        for (i=0; i < operatorList.length; i++) {
-            if ( operatorList[i] == 'multiply' || operatorList[i] == 'divide'){
-                result.push(operate(operatorList[i], operandList[i], operandList[i+1]));
-            } else {
-                result.push(operandList[i]);                                                                                                                                                                                                                   
-            }
-        }
+function equal() {
+    console.log(displayString);
+    if (pressedOperator == false) {
+        postfixConversion(displayString);
     }
 }
 
@@ -90,11 +77,6 @@ function main() {
         });
     });
 }
-
-// How do I replace the 0 when another number is pressed
-// How do I store the operands and operators?
-// HOw do I use the operators to store the operands and keep track of placement?
-// How to calculate the values in a sequence?
 
 function pressBtn (btnID) {
     switch(btnID) {
@@ -143,17 +125,17 @@ function pressBtn (btnID) {
         case 'clear':
             clear();
             break;
-        case 'plusminus':
-            displayString = '-' + displayString;
+        case '(':
+            displayString = displayString + '(' + ' ';
             break;
-        case 'percent':
-            displayString = displayString + '%';
+        case ')':
+            displayString = displayString + ')' + ' ';
             break;
         case 'decimal':
-            displayString = displayString + '.';
+            displayString = displayString + '.' + ' ';
             break;
         case 'equal':
-            displayString = '0';
+            equal();
             break;
         default:
             displayString = '0';
@@ -164,19 +146,13 @@ function pressBtn (btnID) {
 
 function clickOperator(typeOfOperation, symbol) {
     // Operand is stored into currentOperand
-    // Need to store it into the operands array
-    let j = operands.length;
-    let k = operators.length;
     let length = displayString.length;
 
     if (!pressedOperator) {
         // Checks to see if a number has been entered
-        operands[j] = currentOperand;
-        operators[k] = typeOfOperation;
-        currentOperand = NaN; // Set current Operand to zero
+        currentOperand = NaN; // Set current Operand to NaN
         displayString = displayString + ' ' + symbol + ' ';
     } else {
-        operators[k-1] = typeOfOperation;
         let replaceOpStr = displayString.slice(0, length-2);
         displayString = replaceOpStr + symbol + ' ';
     }
@@ -207,7 +183,6 @@ function clickNumber(number) {
 function clear() {
     currentOperand = 0;
     displayString = currentOperand.toString();
-    operands = [];
-    operators = [];
     pressedOperator = false;
 }
+
