@@ -2,58 +2,25 @@
 let displayString = "";
 let currentOperand = 0;
 let pressedOperator = false; // Flag to determine if new values are entered instead of operators
-let decimalPressed = false; // Flag to determine if operand has a decimal pressed
+let pressedDecimal = false; // Flag to determine if operand has a decimal pressed
+let pressedBracket = false; // Flag to make sure brakcets match
 
 const screen = document.querySelector('#calc-display');
 
 // TODO Think if there is a better way than to have two if statements to detect undefined or string operators
-function add(num1, num2) {
-    if (typeof(num1) == 'string' || typeof(num2) == 'string') {
-        return console.log('Detected string entries. Try again using numerical values.');
-    } else {
-        return num1+num2;
-    }
-}
-
-function subtract(num1, num2) {
-    if (typeof(num1) == 'string' || typeof(num2) == 'string') {
-        return console.log('Detected strings entries. Try again using numerical values.');
-    } else {
-        return num1 - num2;
-    }
-}
-
-function multiply(num1, num2) {
-    if (typeof(num1) == 'string' || typeof(num2) == 'string') {
-        return console.log('Detected string entries. Try again using numerical values.');
-    } else {
-        return num1*num2;
-    }
-}
-
-function divide(num1, num2) {
-    if (typeof(num1) == 'string' || typeof(num2) == 'string') {
-        return console.log('Detected string entries. Try again using numerical values');
-    } else {
-        return num1/num2;
-    }
-}
+function add(a,b) { return (a + b).toString();}
+function subtract(a,b) { return (a - b).toString();}
+function multiply(a,b) { return (a * b).toString();}
+function divide(a,b) { return (a / b).toString();}
+function power(a,b) { return (a ** b).toString();}
 
 function operate(operation, num1, num2) {
-    let result = 0;
     switch (operation) {
-        case 'add':
-            result = add(num1, num2);
-            break;
-        case 'subtract':
-            result = subtract(num1, num2);
-            break;
-        case 'multiply':
-            result = multiply(num1, num2);
-            break;
-        case 'divide':
-            result = divide(num1, num2);
-            break;
+        case '+': return add(parseFloat(num1), parseFloat(num2));
+        case '-': return subtract(parseFloat(num1), parseFloat(num2));
+        case 'x': return multiply(parseFloat(num1), parseFloat(num2));
+        case '/': return divide(parseFloat(num1), parseFloat(num2));
+        case '^' : return power(parseFloat(num1), parseFloat(num2));
         default:
             console.log("Issue occured. Please try again.");
     }
@@ -63,7 +30,8 @@ function operate(operation, num1, num2) {
 function equal() {
     console.log(displayString);
     if (pressedOperator == false) {
-        postfixConversion(displayString);
+        let output = postfixConversion(displayString);
+        displayString = evaluatePostfix(output);
     }
 }
 
@@ -111,28 +79,28 @@ function pressBtn (btnID) {
             clickNumber(9);
             break;
         case 'divide':
-            clickOperator('divide', '/');
+            clickOperator('/');
             break;
         case 'multiply':
-            clickOperator('multiply', 'x');
+            clickOperator('x');
             break;
         case 'subtract':
-            clickOperator('subtract', '-');
+            clickOperator('-');
             break;
         case 'plus':
-            clickOperator('plus', '+');
+            clickOperator('+');
             break;
         case 'clear':
             clear();
             break;
-        case '(':
-            displayString = displayString + '(' + ' ';
+        case 'brackets':
+            clickBrackets();
             break;
-        case ')':
-            displayString = displayString + ')' + ' ';
+        case 'power':
+            clickOperator('^');
             break;
         case 'decimal':
-            displayString = displayString + '.' + ' ';
+            clickDecimal();
             break;
         case 'equal':
             equal();
@@ -144,13 +112,14 @@ function pressBtn (btnID) {
     return displayString;
 }
 
-function clickOperator(typeOfOperation, symbol) {
+function clickOperator(symbol) {
     // Operand is stored into currentOperand
     let length = displayString.length;
 
     if (!pressedOperator) {
         // Checks to see if a number has been entered
         currentOperand = NaN; // Set current Operand to NaN
+        pressedDecimal = false;
         displayString = displayString + ' ' + symbol + ' ';
     } else {
         let replaceOpStr = displayString.slice(0, length-2);
@@ -169,8 +138,8 @@ function clickNumber(number) {
             currentOperand = 0;
         } else {
             currentOperand = number;
-            let replaceStr = displayString.slice(0, length-1);
-            displayString = replaceStr + currentOperand.toString();
+            if (pressedBracket) displayString = displayString + currentOperand.toString();                
+            else displayString = displayString.slice(0,length-1) + currentOperand.toString();
         }
     } else {
         currentOperand = currentOperand*10 + number;
@@ -178,6 +147,29 @@ function clickNumber(number) {
     }
     pressedOperator = false; // Keep in mind of this flag
     console.log(currentOperand);
+}
+
+// TODO - Fix issue with no operator or operations inside brackets
+function clickBrackets() {
+    if (displayString === "0"){
+        displayString = '(';
+        pressedBracket = true;
+    } else if (pressedBracket) {
+            if (!pressedOperator && currentOperand != NaN){
+                displayString = displayString + ' ) ';
+                pressedBracket = false;
+            }
+    } else {
+        displayString = displayString + ' ( ';
+        pressedBracket = true;
+    }
+}
+
+function clickDecimal() {
+    if (!pressedDecimal) {
+        displayString = displayString + '.';
+        pressedDecimal = true;
+    }
 }
 
 function clear() {
