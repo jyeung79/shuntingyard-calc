@@ -75,7 +75,7 @@ button:hover {
     background: linear-gradient(45deg, rgba(71,71,74,1) 40%, rgba(64,64,68,1) 67%);
 }
 
-#zero {
+#Digit0 {
     grid-column-start: 1;
     grid-column-end: 3;
 }

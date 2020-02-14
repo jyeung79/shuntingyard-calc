@@ -4,6 +4,8 @@ let currentOperand = "0"; // String for current operand
 let pressedOperator = false; // Flag to determine if new values are entered instead of operators
 let pressedDecimal = false; // Flag to determine if operand has a decimal pressed
 let pressedBracket = false; // Flag to make sure brakcets match
+let keys = {'*':'Multiply', '^':'Power', 'x':'Multiply', '/':'Divide', '-':'Subtract', '+':'Plus',
+    'C':'Clear', 'c':'Clear', '(':'Brackets', ')':'Brackets', '.':'Decimal', '=':'Equal', 'Enter':'Equal'};
 
 const screen = document.querySelector('#calc-display');
 
@@ -45,72 +47,87 @@ function main() {
             changeFontsize();
         });
     });
+
+    document.addEventListener('keydown', (e) => {
+        keyPress(e);
+        console.log(e.code);
+        console.log(e.key);
+        screen.textContent = displayString;
+        changeFontsize();
+    });
 }
 
 function pressBtn (btnID) {
     switch(btnID) {
-        case 'zero':
+        case 'Digit0':
             clickNumber('0');
             break;
-        case 'one':
+        case 'Digit1':
             clickNumber('1');
             break;
-        case 'two':
+        case 'Digit2':
             clickNumber('2');
             break;
-        case 'three':
+        case 'Digit3':
             clickNumber('3');
             break;
-        case 'four':
+        case 'Digit4':
             clickNumber('4');
             break;
-        case 'five':
+        case 'Digit5':
             clickNumber('5');
             break;
-        case 'six':
+        case 'Digit6':
             clickNumber('6');
             break;
-        case 'seven':
+        case 'Digit7':
             clickNumber('7');
             break;
-        case 'eight':
+        case 'Digit8':
             clickNumber('8');
             break;
-        case 'nine':
+        case 'Digit9':
             clickNumber('9');
             break;
-        case 'divide':
+        case 'Divide':
             clickOperator('/');
             break;
-        case 'multiply':
+        case 'Multiply':
             clickOperator('x');
             break;
-        case 'subtract':
+        case 'Subtract':
             clickOperator('-');
             break;
-        case 'plus':
+        case 'Plus':
             clickOperator('+');
             break;
-        case 'clear':
+        case 'Clear':
             clear();
             break;
-        case 'brackets':
+        case 'Brackets': // TODO implement left and right bracket
             clickBrackets();
             break;
-        case 'power':
+        case 'Power':
             clickOperator('^');
             break;
-        case 'decimal':
+        case 'Decimal':
             clickDecimal();
             break;
-        case 'equal':
+        case 'Equal':
             equal();
             break;
         default:
-            displayString = '0';
             break;
     }
     return displayString;
+}
+
+function keyPress(event) {
+    if (event.key >= 0 && event.key <= 9) {
+        pressBtn(event.code);
+    } else if (event.key in keys) {
+        pressBtn(keys[event.key]);
+    }
 }
 
 function clickOperator(symbol) {
@@ -183,7 +200,6 @@ function clear() {
 
 function changeFontsize() {
     let eqnLength = displayString.length;
-    console.log(eqnLength);
 
     if (eqnLength <= 12) {
         screen.style.fontSize = "55px";
