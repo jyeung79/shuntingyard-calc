@@ -1,0 +1,22 @@
+{
+  "name": "calculator-top",
+  "version": "1.0.0",
+  "description": "Calculator app for desktop",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeff-yeung/calculator-TOP.git"
+  },
+  "author": "Jeffery Yeung",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeff-yeung/calculator-TOP/issues"
+  },
+  "homepage": "https://github.com/jeff-yeung/calculator-TOP#readme",
+  "devDependencies": {
+    "electron": "^8.0.0"
+  }
+}
