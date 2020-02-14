@@ -1,6 +1,8 @@
 # Calculator Project
 
-![alt text](https://github.com/jeff-yeung/calculator-TOP/blob/master/images/calculator-electron.png "Calculator Desktop App")
+<p align='center'>
+    <img src ="https://github.com/jeff-yeung/calculator-TOP/blob/master/images/calculator-electron.png" alt="Calculator Desktop App">
+</p>
 
 ### Shunting-Yard Algorithm 
 An algorithm developed by Edsger Wybe Dijkstra to transform an infix mathematical expression into a postfix mathematical expression.
