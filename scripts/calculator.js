@@ -1,6 +1,6 @@
  // Instantiate all global variables
-let displayString = "";
-let currentOperand = 0;
+let displayString = "0"; // String displayed on calculator
+let currentOperand = "0"; // String for current operand
 let pressedOperator = false; // Flag to determine if new values are entered instead of operators
 let pressedDecimal = false; // Flag to determine if operand has a decimal pressed
 let pressedBracket = false; // Flag to make sure brakcets match
@@ -42,6 +42,7 @@ function main() {
         button.addEventListener('click', (e) => {
             pressBtn(button.id);
             screen.textContent = displayString;
+            changeFontsize();
         });
     });
 }
@@ -49,34 +50,34 @@ function main() {
 function pressBtn (btnID) {
     switch(btnID) {
         case 'zero':
-            clickNumber(0);
+            clickNumber('0');
             break;
         case 'one':
-            clickNumber(1);
+            clickNumber('1');
             break;
         case 'two':
-            clickNumber(2);
+            clickNumber('2');
             break;
         case 'three':
-            clickNumber(3);
+            clickNumber('3');
             break;
         case 'four':
-            clickNumber(4);
+            clickNumber('4');
             break;
         case 'five':
-            clickNumber(5);
+            clickNumber('5');
             break;
         case 'six':
-            clickNumber(6);
+            clickNumber('6');
             break;
         case 'seven':
-            clickNumber(7);
+            clickNumber('7');
             break;
         case 'eight':
-            clickNumber(8);
+            clickNumber('8');
             break;
         case 'nine':
-            clickNumber(9);
+            clickNumber('9');
             break;
         case 'divide':
             clickOperator('/');
@@ -118,7 +119,7 @@ function clickOperator(symbol) {
 
     if (!pressedOperator) {
         // Checks to see if a number has been entered
-        currentOperand = NaN; // Set current Operand to NaN
+        currentOperand = ""; // Set current Operand to NaN
         pressedDecimal = false;
         displayString = displayString + ' ' + symbol + ' ';
     } else {
@@ -130,19 +131,19 @@ function clickOperator(symbol) {
 
 function clickNumber(number) {
     // Check if the value is not a 0
-    if (currentOperand == NaN) {
+    if (currentOperand === "") {
         currentOperand = number;
         displayString = displayString + currentOperand.toString();
-    } else if (currentOperand == 0) { //Make sure display does not change
-        if (number == 0) {
-            currentOperand = 0;
+    } else if (currentOperand === '0') { //Make sure display does not change
+        if (number === "0") {
+            currentOperand = "0";
         } else {
             currentOperand = number;
             if (pressedBracket) displayString = displayString + currentOperand.toString();                
             else displayString = displayString.slice(0,length-1) + currentOperand.toString();
         }
-    } else {
-        currentOperand = currentOperand*10 + number;
+    } else { // Includes if currentOperand has a decimal
+        currentOperand += number;
         displayString = displayString + number.toString();
     }
     pressedOperator = false; // Keep in mind of this flag
@@ -167,14 +168,33 @@ function clickBrackets() {
 
 function clickDecimal() {
     if (!pressedDecimal) {
+        currentOperand += '.';
         displayString = displayString + '.';
         pressedDecimal = true;
     }
 }
 
 function clear() {
-    currentOperand = 0;
+    currentOperand = "0";
     displayString = currentOperand.toString();
     pressedOperator = false;
+    pressedDecimal = false;
 }
 
+function changeFontsize() {
+    let eqnLength = displayString.length;
+    console.log(eqnLength);
+
+    if (eqnLength <= 12) {
+        screen.style.fontSize = "55px";
+    } else if (eqnLength > 12 && eqnLength <= 17) {
+        screen.style.fontSize = "47px";
+    } else if (eqnLength > 17 && eqnLength <= 20) {
+        screen.style.fontSize = "40px"
+    } else {
+        screen.style.fontSize = "35px";
+        screen.style.textAlignLast = "right";
+    }
+}
+
+main();

@@ -32,6 +32,7 @@ html {
 }
 
 .screen {
+    display:inline-block;
     font-family: 'Montserrat', sans-serif;
     margin: 0 10px 10px 0px;
     padding: 5px 10px 0 0px;
@@ -40,12 +41,16 @@ html {
     background-color: #525252;
     border: 1px solid #6b6b6b;
     color: #ffffff;
+
     text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #calc-display {
     line-height: 75px;
-    font-size: 70px;
+    font-size: 55px;
+    float: right;
 }
 
 .calc-keys {
