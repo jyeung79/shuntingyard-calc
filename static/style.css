@@ -75,9 +75,14 @@ button:hover {
     background: linear-gradient(45deg, rgba(71,71,74,1) 40%, rgba(64,64,68,1) 67%);
 }
 
-#Digit0 {
-    grid-column-start: 1;
-    grid-column-end: 3;
+#Equal {
+    background: rgb(59,75,75);
+    background: linear-gradient(90deg, rgba(59,75,75,1) 0%, rgba(66,84,84,1) 100%);
+}
+
+#Equal:hover {
+    background: rgb(59,75,75);
+    background: linear-gradient(90deg, rgba(59,75,75,0.9144175329873728) 0%, rgba(66,84,84,0.923138463219931) 100%);
 }
 
 .operators {

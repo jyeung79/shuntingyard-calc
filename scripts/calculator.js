@@ -3,10 +3,11 @@ let displayString = "0"; // String displayed on calculator
 let currentOperand = "0"; // String for current operand
 let pressedOperator = false; // Flag to determine if new values are entered instead of operators
 let pressedDecimal = false; // Flag to determine if operand has a decimal pressed
-let pressedBracket = false; // Flag to make sure brakcets match
-let keys = {'*':'Multiply', '^':'Power', 'x':'Multiply', '/':'Divide', '-':'Subtract', '+':'Plus',
-    'C':'Clear', 'c':'Clear', '(':'Brackets', ')':'Brackets', '.':'Decimal', '=':'Equal', 'Enter':'Equal'};
+let leftBrackets = 0; // Flag that measure how many left brackets
+let rightBracket = false; // Flag to make sure operands don't appear right after
 
+const keys = {'*':'Multiply', '^':'Power', 'x':'Multiply', '/':'Divide', '-':'Subtract', '+':'Plus',
+    'C':'Clear', 'c':'Clear', '(':'LeftBracket', ')':'RightBracket', '.':'Decimal', '=':'Equal', 'Enter':'Equal'};
 const screen = document.querySelector('#calc-display');
 
 // TODO Think if there is a better way than to have two if statements to detect undefined or string operators
@@ -104,8 +105,11 @@ function pressBtn (btnID) {
         case 'Clear':
             clear();
             break;
-        case 'Brackets': // TODO implement left and right bracket
-            clickBrackets();
+        case 'LeftBracket':
+            clickBrackets('(');
+            break;
+        case 'RightBracket':
+            clickBrackets(')');
             break;
         case 'Power':
             clickOperator('^');
@@ -140,24 +144,27 @@ function clickOperator(symbol) {
         pressedDecimal = false;
         displayString = displayString + ' ' + symbol + ' ';
     } else {
-        let replaceOpStr = displayString.slice(0, length-2);
-        displayString = replaceOpStr + symbol + ' ';
+        let replaceOperator = displayString.slice(0, length-2);
+        displayString = replaceOperator + symbol + ' ';
     }
     pressedOperator = true;
+    rightBracket = false;
 }
 
 function clickNumber(number) {
     // Check if the value is not a 0
     if (currentOperand === "") {
-        currentOperand = number;
-        displayString = displayString + currentOperand.toString();
+        if (rightBracket) {}
+        else {
+            currentOperand = number;
+            displayString = displayString + currentOperand.toString();
+        }
     } else if (currentOperand === '0') { //Make sure display does not change
         if (number === "0") {
             currentOperand = "0";
         } else {
             currentOperand = number;
-            if (pressedBracket) displayString = displayString + currentOperand.toString();                
-            else displayString = displayString.slice(0,length-1) + currentOperand.toString();
+            displayString = displayString.slice(0,length-1) + currentOperand.toString();
         }
     } else { // Includes if currentOperand has a decimal
         currentOperand += number;
@@ -168,18 +175,30 @@ function clickNumber(number) {
 }
 
 // TODO - Fix issue with no operator or operations inside brackets
-function clickBrackets() {
-    if (displayString === "0"){
-        displayString = '(';
-        pressedBracket = true;
-    } else if (pressedBracket) {
-            if (!pressedOperator && currentOperand != NaN){
-                displayString = displayString + ' ) ';
-                pressedBracket = false;
-            }
-    } else {
-        displayString = displayString + ' ( ';
-        pressedBracket = true;
+function clickBrackets(symbol) {
+    // Check which bracket pressed
+    switch(symbol) {
+        case '(':
+            // When cleared
+            if (displayString === '0') {
+                displayString = '(';
+                currentOperand = "";
+                leftBrackets++;
+                rightBracket = false;
+            } else if (currentOperand == '' && !rightBracket) { // this includes clicked on operators or pressed left bracket
+                displayString = displayString + '(';
+                leftBrackets++;
+                rightBracket = false;
+            } break;
+        case ')':
+            if (leftBrackets > 0 && !pressedOperator) {
+                displayString = displayString + ')';
+                currentOperand = "";
+                leftBrackets--;
+                rightBracket = true;
+            } break;
+        default:
+            break;
     }
 }
 
@@ -196,6 +215,7 @@ function clear() {
     displayString = currentOperand.toString();
     pressedOperator = false;
     pressedDecimal = false;
+    rightBracket = false;
 }
 
 function changeFontsize() {
