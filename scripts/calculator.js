@@ -36,6 +36,7 @@ function equal() {
         let output = postfixConversion(displayString);
         displayString = evaluatePostfix(output);
     }
+    changeFontsize();
 }
 
 function main() {
