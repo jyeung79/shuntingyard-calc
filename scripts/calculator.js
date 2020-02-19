@@ -107,6 +107,7 @@ function pressBtn (btnID) {
             break;
         case 'LeftBracket':
             clickBrackets('(');
+
             break;
         case 'RightBracket':
             clickBrackets(')');
@@ -221,11 +222,11 @@ function clear() {
 function changeFontsize() {
     let eqnLength = displayString.length;
 
-    if (eqnLength <= 12) {
+    if (eqnLength <= 10) {
         screen.style.fontSize = "55px";
-    } else if (eqnLength > 12 && eqnLength <= 17) {
+    } else if (eqnLength > 10 && eqnLength <= 15) {
         screen.style.fontSize = "47px";
-    } else if (eqnLength > 17 && eqnLength <= 20) {
+    } else if (eqnLength > 15 && eqnLength <= 20) {
         screen.style.fontSize = "40px"
     } else {
         screen.style.fontSize = "35px";
