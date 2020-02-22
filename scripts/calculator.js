@@ -5,6 +5,7 @@ let pressedOperator = false; // Flag to determine if new values are entered inst
 let pressedDecimal = false; // Flag to determine if operand has a decimal pressed
 let leftBrackets = 0; // Flag that measure how many left brackets
 let rightBracket = false; // Flag to make sure operands don't appear right after
+let pressedEqual = false; // Received result of calculation
 
 const keys = {'*':'Multiply', '^':'Power', 'x':'Multiply', '/':'Divide', '-':'Subtract', '+':'Plus',
     'C':'Clear', 'c':'Clear', '(':'LeftBracket', ')':'RightBracket', '.':'Decimal', '=':'Equal', 'Enter':'Equal'};
@@ -35,9 +36,10 @@ function equal() {
     if (pressedOperator == false) {
         let output = postfixConversion(displayString);
         displayString = evaluatePostfix(output);
+        currentOperand = displayString;
+        pressedEqual = true;
     }
     changeFontsize();
-    //screen.style.textAlignLast = "left";
 }
 
 function main() {
@@ -107,7 +109,6 @@ function pressBtn (btnID) {
             break;
         case 'LeftBracket':
             clickBrackets('(');
-
             break;
         case 'RightBracket':
             clickBrackets(')');
@@ -138,10 +139,11 @@ function keyPress(event) {
 function clickOperator(symbol) {
     // Operand is stored into currentOperand
     let length = displayString.length;
+    if (pressedEqual === true && !displayString.isNumeric()) clear();
+    else pressedEqual = false;
 
     if (!pressedOperator) {
-        // Checks to see if a number has been entered
-        currentOperand = ""; // Set current Operand to NaN
+        currentOperand = "";
         pressedDecimal = false;
         displayString = displayString + ' ' + symbol + ' ';
     } else {
@@ -153,7 +155,9 @@ function clickOperator(symbol) {
 }
 
 function clickNumber(number) {
-    // Check if the value is not a 0
+    if (pressedEqual === true) clear();
+    else pressedEqual = false;
+
     if (currentOperand === "") {
         if (rightBracket) {}
         else {
@@ -217,6 +221,7 @@ function clear() {
     pressedOperator = false;
     pressedDecimal = false;
     rightBracket = false;
+    pressedEqual = false;
 }
 
 function changeFontsize() {
