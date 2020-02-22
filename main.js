@@ -4,10 +4,10 @@ function createWindow () {
 	// Create the browser windows
 	let mainWindow = new BrowserWindow({
 		width: 460,
-		height: 555,
-		webPreferences: {
-			nodeIntegration: true
-		}
+		height: 565,
+		resizable: false,
+		transparent: true,
+		frame: false
 	})
 	mainWindow.setMenuBarVisibility(false)
 
@@ -19,7 +19,7 @@ app.whenReady().then(createWindow)
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
-		app.quite()
+		app.quit()
 	}
 })
 
