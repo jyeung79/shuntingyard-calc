@@ -25,6 +25,7 @@ html {
 .calculator {
     margin-left: auto;
     margin-right: auto;
+    margin-top: 20px;
     padding: 20px;
     max-width: 470px;
     border: 1px solid #bfbfbf;
