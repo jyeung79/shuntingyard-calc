@@ -37,6 +37,7 @@ function equal() {
         displayString = evaluatePostfix(output);
     }
     changeFontsize();
+    //screen.style.textAlignLast = "left";
 }
 
 function main() {
@@ -52,8 +53,6 @@ function main() {
 
     document.addEventListener('keydown', (e) => {
         keyPress(e);
-        console.log(e.code);
-        console.log(e.key);
         screen.textContent = displayString;
         changeFontsize();
     });
@@ -187,7 +186,7 @@ function clickBrackets(symbol) {
                 currentOperand = "";
                 leftBrackets++;
                 rightBracket = false;
-            } else if (currentOperand == '' && !rightBracket) { // this includes clicked on operators or pressed left bracket
+            } else if (currentOperand === '' && !rightBracket) { // this includes clicked on operators or pressed left bracket
                 displayString = displayString + '(';
                 leftBrackets++;
                 rightBracket = false;
@@ -222,15 +221,18 @@ function clear() {
 
 function changeFontsize() {
     let eqnLength = displayString.length;
+    console.log(displayString.length);
 
     if (eqnLength <= 10) {
         screen.style.fontSize = "55px";
     } else if (eqnLength > 10 && eqnLength <= 15) {
         screen.style.fontSize = "47px";
-    } else if (eqnLength > 15 && eqnLength <= 20) {
+    } else if (eqnLength > 15 && eqnLength <= 18) {
         screen.style.fontSize = "40px"
-    } else {
+    } else if (eqnLength > 18 && eqnLength <= 20) {
         screen.style.fontSize = "35px";
+    } else {
+        screen.style.fontSize = "30px";
         screen.style.textAlignLast = "right";
     }
 }

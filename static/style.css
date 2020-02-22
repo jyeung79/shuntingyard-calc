@@ -28,7 +28,10 @@ html {
     padding: 20px;
     max-width: 470px;
     border: 1px solid #bfbfbf;
-    background: #292a2b;
+    background: linear-gradient(145deg, #292a2b, #1f1f20);
+    box-shadow:  24px 24px 48px #999999, 
+             -24px -24px 48px #ffffff;
+    border-radius: 20px;
 }
 
 .screen {
