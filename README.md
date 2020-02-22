@@ -1,6 +1,6 @@
 # Calculator Project
 <p align='center'>
-    <img src ="https://github.com/jeff-yeung/calculator-TOP/blob/master/images/calculator-electron.png" alt="Calculator Desktop App">
+    <img src ="https://github.com/jeff-yeung/calculator-TOP/blob/master/images/calculator-neumorphism.png" alt="Calculator Desktop App">
 </p>
 
 ### Shunting-Yard Algorithm 
