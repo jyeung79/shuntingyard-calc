@@ -1,15 +1,10 @@
 {
   "name": "shunting-yard-calculator",
   "version": "1.0.0",
-  "description": "Neumorphic design calculator implemented using Dijkstra's Shunting Yard Algorithm",
+  "description": "A neumorphic design calculator implemented with Dijksta's Shunting Yard algorithm",
   "main": "index.js",
-  "dependencies": {
-    "express": "^4.17.1"
-  },
-  "devDependencies": {},
   "scripts": {
-    "start": "index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +12,7 @@
   },
   "keywords": [
     "shunting-yard",
+    "neumorphism",
     "calculator"
   ],
   "author": "Jeffery Yeung",
@@ -24,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/jeff-yeung/calculator-TOP/issues"
   },
-  "homepage": "https://github.com/jeff-yeung/calculator-TOP#readme"
+  "homepage": "https://github.com/jeff-yeung/calculator-TOP#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
