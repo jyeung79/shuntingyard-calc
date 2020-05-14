@@ -1,17 +1,11 @@
-let operations = {
-    '^': {precedence:4, associativity: 'Right'},
-    '/': {precedence:3, associativity: 'Left'},
-    'x': {precedence:3, associativity: 'Left'},
-    '+': {precedence:2, associativity: 'Left'},
-    '-': {precedence:2, associativity: 'Left'},
-}
+import { operations, operate } from './calculator.js';
 
 function postfixConversion(equation) {
-    let stack = [];
-    let output = [];
+    let stack = [], output = [];
+    let precedence = '', antecedence = '';
     let infix = equation.replace(/\s+/g, ""); // Removes groups of whitespaces from the string
-    infix = infix.split(/([\+\-\x\/\^\(\)])/).clean(); // Split into array of operator and operands tokens
-    console.log(infix);
+    infix = infix.split(/([\+\-\x\/\^\(\)])/); // Split into array of operator and operands tokens
+    console.log("This is the infix" + infix);
 
     for (let i = 0; i < infix.length; i++) {
         let token = infix[i];
@@ -32,7 +26,7 @@ function postfixConversion(equation) {
             }
             break;
         default:
-            if (operations.hasOwnProperty(token)) {
+            if (token in operations) {
                 while (stack.length) {
                     let punctuator = stack[0];
 
@@ -61,13 +55,13 @@ function postfixConversion(equation) {
     }
     console.log(output);
     return output;
-}
+};
 
 function evaluatePostfix(postfix) {
     let postfixStack = [];
 
-    postfix.forEach( function(current) {
-        if (operations.hasOwnProperty(current)) {
+    postfix.forEach(current => {
+        if (current in operations) {
             let operand2 = postfixStack.pop();
             let operand1 = postfixStack.pop();
             postfixStack.push(
@@ -81,18 +75,6 @@ function evaluatePostfix(postfix) {
     });
     console.log(postfixStack);
     return postfixStack.shift();
-}
+};
 
-
-String.prototype.isNumeric = function() {
-    return !isNaN(parseFloat(this)) && isFinite(this);
-}
-
-Array.prototype.clean = function() {
-    for (let i = 0; i < this.length; i++) {
-        if (this[i] == '') {
-            this.splice(i, 1);
-        }
-    }
-    return this;
-}
+export { postfixConversion, evaluatePostfix };

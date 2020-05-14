@@ -1,4 +1,6 @@
- // Instantiate all global variables
+import { postfixConversion, evaluatePostfix } from './shunting-yard.js';
+
+// Instantiate all global variables
 let displayString = "0"; // String displayed on calculator
 let currentOperand = "0"; // String for current operand
 let pressedOperator = false; // Flag to determine if new values are entered instead of operators
@@ -9,14 +11,23 @@ let pressedEqual = false; // Received result of calculation
 
 const keys = {'*':'Multiply', '^':'Power', 'x':'Multiply', '/':'Divide', '-':'Subtract', '+':'Plus',
     'C':'Clear', 'c':'Clear', '(':'LeftBracket', ')':'RightBracket', '.':'Decimal', '=':'Equal', 'Enter':'Equal'};
+
+const operations = {
+    '^': {precedence:4, associativity: 'Right'},
+    '/': {precedence:3, associativity: 'Left'},
+    'x': {precedence:3, associativity: 'Left'},
+    '+': {precedence:2, associativity: 'Left'},
+    '-': {precedence:2, associativity: 'Left'},
+};
+
 const screen = document.querySelector('#calc-display');
 
 // TODO Think if there is a better way than to have two if statements to detect undefined or string operators
-function add(a,b) { return (a + b).toString();}
-function subtract(a,b) { return (a - b).toString();}
-function multiply(a,b) { return (a * b).toString();}
-function divide(a,b) { return (a / b).toString();}
-function power(a,b) { return (a ** b).toString();}
+const add = (a,b) => (a + b).toString();
+const subtract = (a, b) => (a - b).toString();
+const multiply =(a, b) => (a * b).toString();
+const divide = (a, b) => (a / b).toString();
+const power = (a, b) => (a ** b).toString();
 
 function operate(operation, num1, num2) {
     switch (operation) {
@@ -126,7 +137,7 @@ function pressBtn (btnID) {
             break;
     }
     return displayString;
-}
+};
 
 function keyPress(event) {
     if (event.key >= 0 && event.key <= 9) {
@@ -134,7 +145,7 @@ function keyPress(event) {
     } else if (event.key in keys) {
         pressBtn(keys[event.key]);
     }
-}
+};
 
 function clickOperator(symbol) {
     // Operand is stored into currentOperand
@@ -152,7 +163,7 @@ function clickOperator(symbol) {
     }
     pressedOperator = true;
     rightBracket = false;
-}
+};
 
 function clickNumber(number) {
     if (pressedEqual === true) clear();
@@ -177,7 +188,7 @@ function clickNumber(number) {
     }
     pressedOperator = false; // Keep in mind of this flag
     console.log(currentOperand);
-}
+};
 
 // TODO - Fix issue with no operator or operations inside brackets
 function clickBrackets(symbol) {
@@ -205,7 +216,7 @@ function clickBrackets(symbol) {
         default:
             break;
     }
-}
+};
 
 function clickDecimal() {
     if (!pressedDecimal) {
@@ -213,7 +224,7 @@ function clickDecimal() {
         displayString = displayString + '.';
         pressedDecimal = true;
     }
-}
+};
 
 function clear() {
     currentOperand = "0";
@@ -222,7 +233,7 @@ function clear() {
     pressedDecimal = false;
     rightBracket = false;
     pressedEqual = false;
-}
+};
 
 function changeFontsize() {
     let eqnLength = displayString.length;
@@ -240,6 +251,8 @@ function changeFontsize() {
         screen.style.fontSize = "30px";
         screen.style.textAlignLast = "right";
     }
-}
+};
 
 main();
+
+export { operations, operate };
