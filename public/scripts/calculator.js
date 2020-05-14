@@ -40,7 +40,7 @@ function operate(operation, num1, num2) {
             console.log("Issue occured. Please try again.");
     }
     return result;
-}
+};
 
 function equal() {
     console.log(displayString);
@@ -51,7 +51,7 @@ function equal() {
         pressedEqual = true;
     }
     changeFontsize();
-}
+};
 
 function main() {
     const btns = document.querySelectorAll('button');
@@ -69,7 +69,7 @@ function main() {
         screen.textContent = displayString;
         changeFontsize();
     });
-}
+};
 
 function pressBtn (btnID) {
     switch(btnID) {
